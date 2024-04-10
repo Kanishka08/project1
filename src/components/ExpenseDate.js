@@ -16,9 +16,9 @@ const months = [
 
 
 const ExpenseDate = (props) => {
-  const month = months[props.calendarDate.getMonth()]
-  const year = props.calendarDate.getFullYear();
-  const date = props.calendarDate.getDate();
+  const month = months[props.date.getMonth()]
+  const year = props.date.getFullYear();
+  const date = props.date.getDate();
 
   return (
     <div className="expense-date">
