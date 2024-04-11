@@ -1,30 +1,44 @@
+import React, { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
+import ExpensesFilter from "./ExpensesFilter";
 import "./Expenses.css";
 import Card from "../UI/Card";
 
-function Expenses(props){
-    // const expenses = [
-    //     { id: "1", date: new Date(2023, 7, 15), title: "Insurance", price: 100, location: "Bangalore" },
-    //     { id: "2", date: new Date(2023, 3, 25), title: "Book", price: 10, location: "Delhi" },
-    //     { id: "3", date: new Date(2023, 10, 11), title: "Pen", price: 1, location: "Hyderabad" },
-    //     { id: "4", date: new Date(2023, 1, 14), title: "Laptop", price: 200, location: "Mumbai" },
-    // ];
+const Expenses = (props) => {
+  const [filteredYear, setFilteredYear] = useState("2023");
 
-    return (
-        <Card className="expenses">
-            {props.expenses.map((expense) => {
-                return (
-                    <ExpenseItem
-                        id={expense.id}
-                        date={expense.date}
-                        title={expense.title}
-                        price={expense.price}
-                        // location={expense.location} 
-                    />
-                );
-            })}
-        </Card>
-    );
-}
+  const changeFilterHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+  let expensesContent = <p>No expenses found</p>;
+
+  if (filteredExpenses.length > 0) {
+    expensesContent = filteredExpenses.map((expense) => {
+      return (
+        <ExpenseItem
+          key={expense.id}
+          title={expense.title}
+          date={expense.date}
+          price={expense.price}
+        />
+      );
+    });
+  }
+
+  return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selected={filteredYear}
+        onChangeFilter={changeFilterHandler}
+      />
+      {expensesContent}
+    </Card>
+  );
+};
 
 export default Expenses;
